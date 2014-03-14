@@ -44,7 +44,7 @@
 	{
 		NSUInteger start = step * stepsPerLoop;
 		NSUInteger end = start + stepsPerLoop;
-		if (end > indexCount)
+		if (end >= indexCount)
 		{
 			end = indexCount;
 			done = YES;
