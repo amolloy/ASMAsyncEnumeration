@@ -39,6 +39,8 @@ Using these methods with a mutable array is not advisable. If you wish to use it
   
 If you must enumerate a mutable array directly, you must be careful not to mutate the array before the enumeration is complete, otherwise the results are undefined.
 
+ASMAsyncEnumeration supports NSProgress.
+
 ## Installation
 
 ASMAsyncEnumeration is available through [CocoaPods](http://cocoapods.org), to install it simply add the following line to your Podfile:
