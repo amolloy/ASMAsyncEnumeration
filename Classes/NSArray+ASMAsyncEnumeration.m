@@ -62,7 +62,7 @@
 	__block NSUInteger stepsTaken = 0;
 
 	[self enumerateObjectsAtIndexes:indexSet
-							options:opts
+							options:opts & NSEnumerationReverse
 						 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 							 lastIndex = idx;
 							 if(progress.cancelled)
