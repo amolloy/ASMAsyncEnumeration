@@ -12,7 +12,7 @@
 @interface NSArray (ASMAsyncEnumeration)
 
 typedef void(^ASMNSArrayAsyncEnumerationBlock)(id obj, NSUInteger idx, BOOL *stop);
-typedef void(^ASMNSArrayAsyncEnumerationCompletionBlock)(NSUInteger stoppedIndex);
+typedef void(^ASMNSArrayAsyncEnumerationCompletionBlock)(NSUInteger stoppedIndex, NSError* error);
 
 - (void)asm_enumerateObjectsAsynchronouslyAtIndexes:(NSIndexSet *)s
 											options:(NSEnumerationOptions)opts

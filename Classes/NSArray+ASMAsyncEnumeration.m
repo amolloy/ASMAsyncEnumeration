@@ -16,6 +16,7 @@
 											  options:(NSEnumerationOptions)opts
 											  onQueue:(dispatch_queue_t)queue
 										 stepsPerLoop:(NSUInteger)stepsPerLoop
+											 progress:(NSProgress*)progress
 										   usingBlock:(ASMNSArrayAsyncEnumerationBlock)block
 										   completion:(ASMNSArrayAsyncEnumerationCompletionBlock)completion
 {
@@ -57,14 +58,29 @@
 
 	__block BOOL shouldStop = NO;
 	__block NSUInteger lastIndex = 0;
+	__block NSError* error = nil;
+	__block NSUInteger stepsTaken = 0;
 
 	[self enumerateObjectsAtIndexes:indexSet
 							options:opts
 						 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-							 lastIndex = idx;
-							 block(obj, idx, stop);
-							 shouldStop = *stop;
+							 if(progress.cancelled)
+							 {
+								 *stop = YES;
+								 error = [NSError errorWithDomain:NSCocoaErrorDomain
+															 code:NSUserCancelledError
+														 userInfo:nil];
+							 }
+							 else
+							 {
+								 lastIndex = idx;
+								 block(obj, idx, stop);
+								 shouldStop = *stop;
+								 ++stepsTaken;
+							 }
 						 }];
+
+	progress.completedUnitCount+= stepsTaken;
 
 	if (!shouldStop && !done)
 	{
@@ -76,6 +92,7 @@
 																	   options:opts
 																	   onQueue:queue
 																  stepsPerLoop:stepsPerLoop
+																	  progress:progress
 																	usingBlock:[block copy]
 																	completion:[completion copy]];
 					   });
@@ -83,7 +100,7 @@
 	else
 	{
 		free(indexes);
-		completion(lastIndex);
+		completion(lastIndex, error);
 	}
 }
 
@@ -103,6 +120,8 @@
 	ASMNSArrayAsyncEnumerationBlock ourBlock = [block copy];
 	ASMNSArrayAsyncEnumerationCompletionBlock ourCompletion = [completion copy];
 
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:[s count]];
+
 	dispatch_async(queue,
 				   ^{
 					   [self asm_enumerateObjectsAsynchronouslyWithIndexes:indexes
@@ -111,6 +130,7 @@
 																   options:opts
 																   onQueue:queue
 															  stepsPerLoop:stepsPerLoop
+																  progress:progress
 																usingBlock:ourBlock
 																completion:ourCompletion];
 				   });
