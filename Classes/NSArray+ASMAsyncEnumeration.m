@@ -15,7 +15,7 @@
 										  currentStep:(NSUInteger)step
 											  options:(NSEnumerationOptions)opts
 											  onQueue:(dispatch_queue_t)queue
-									 withStepsPerLoop:(NSUInteger)stepsPerLoop
+										 stepsPerLoop:(NSUInteger)stepsPerLoop
 										   usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
 										   completion:(void (^)(NSUInteger stoppedIndex))completion
 {
@@ -61,9 +61,9 @@
 	[self enumerateObjectsAtIndexes:indexSet
 							options:opts
 						 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+							 lastIndex = idx;
 							 block(obj, idx, stop);
 							 shouldStop = *stop;
-							 lastIndex = idx;
 						 }];
 
 	if (!shouldStop && !done)
@@ -75,7 +75,7 @@
 																   currentStep:step + 1
 																	   options:opts
 																	   onQueue:queue
-															  withStepsPerLoop:stepsPerLoop
+																  stepsPerLoop:stepsPerLoop
 																	usingBlock:[block copy]
 																	completion:[completion copy]];
 					   });
@@ -87,11 +87,10 @@
 	}
 }
 
-
 - (void)asm_enumerateObjectsAsynchronouslyAtIndexes:(NSIndexSet *)s
 											options:(NSEnumerationOptions)opts
 											onQueue:(dispatch_queue_t)queue
-								   withStepsPerLoop:(NSUInteger)stepsPerLoop
+									   stepsPerLoop:(NSUInteger)stepsPerLoop
 										 usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
 										 completion:(void (^)(NSUInteger stoppedIndex))completion
 {
@@ -108,10 +107,59 @@
 															   currentStep:0
 																   options:opts
 																   onQueue:queue
-														  withStepsPerLoop:stepsPerLoop
+															  stepsPerLoop:stepsPerLoop
 																usingBlock:[block copy]
 																completion:[completion copy]];
 				   });
 }
 
+- (void)asm_enumerateObjectsAsynchronouslyWithOptions:(NSEnumerationOptions)opts
+											  onQueue:(dispatch_queue_t)queue
+										 stepsPerLoop:(NSUInteger)stepsPerLoop
+										   usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
+										   completion:(void (^)(NSUInteger stoppedIndex))completion
+{
+	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
+											  options:opts
+											  onQueue:queue
+										 stepsPerLoop:stepsPerLoop
+										   usingBlock:block
+										   completion:completion];
+}
+
+- (void)asm_enumerateObjectsAsynchronouslyOnMainQueueWithOptions:(NSEnumerationOptions)opts
+													stepsPerLoop:(NSUInteger)stepsPerLoop
+													  usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
+													  completion:(void (^)(NSUInteger stoppedIndex))completion
+{
+	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
+											  options:opts
+											  onQueue:dispatch_get_main_queue()
+										 stepsPerLoop:stepsPerLoop
+										   usingBlock:block
+										   completion:completion];
+}
+
+- (void)asm_enumerateObjectsAsynchronouslyOnMainQueueUsingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
+													 completion:(void (^)(NSUInteger stoppedIndex))completion
+{
+	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
+											  options:0
+											  onQueue:dispatch_get_main_queue()
+										 stepsPerLoop:1
+										   usingBlock:block
+										   completion:completion];
+}
+
+- (void)asm_enumerateObjectsAsynchronouslyWithOnQueue:(dispatch_queue_t)queue
+										   usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
+										   completion:(void (^)(NSUInteger stoppedIndex))completion
+{
+	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
+											  options:0
+											  onQueue:dispatch_get_main_queue()
+										 stepsPerLoop:1
+										   usingBlock:block
+										   completion:completion];
+}
 @end
