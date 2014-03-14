@@ -1,6 +1,6 @@
 //
 //  NSArray+ASMAsyncEnumeration.m
-//  Demo
+//  ASMAsyncEnumeration
 //
 //  Created by Andrew Molloy on 3/14/14.
 //  Copyright (c) 2014 Andrew Molloy. All rights reserved.
