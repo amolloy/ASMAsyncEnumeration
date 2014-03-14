@@ -64,16 +64,17 @@
 	[self enumerateObjectsAtIndexes:indexSet
 							options:opts
 						 usingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+							 lastIndex = idx;
 							 if(progress.cancelled)
 							 {
 								 *stop = YES;
+								 shouldStop = YES;
 								 error = [NSError errorWithDomain:NSCocoaErrorDomain
 															 code:NSUserCancelledError
 														 userInfo:nil];
 							 }
 							 else
 							 {
-								 lastIndex = idx;
 								 block(obj, idx, stop);
 								 shouldStop = *stop;
 								 ++stepsTaken;
