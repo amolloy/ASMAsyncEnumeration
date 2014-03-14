@@ -1,7 +1,2 @@
 pod "ASMAsyncEnumeration", :path => "../ASMAsyncEnumeration.podspec"
 
-target "Demo" do
-end
-
-target "DemoTests" do
-end

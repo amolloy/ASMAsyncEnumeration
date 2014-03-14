@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="vXZ-lx-hvc">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="ufC-wZ-h7g">
+            <objects>
+                <viewController id="vXZ-lx-hvc" customClass="ASMViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
+                        <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="kh9-bI-dsS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="a0U-YC-eVW">
+                                <rect key="frame" x="20" y="283" width="280" height="2"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </progressView>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7L3-fB-G8M">
+                                <rect key="frame" x="20" y="293" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FkT-KJ-HCL">
+                                <rect key="frame" x="258" y="293" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vG2-Gv-iYI">
+                                <rect key="frame" x="136" y="245" width="48" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Cancel">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancel:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="m15-Bb-edJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerY" secondItem="a0U-YC-eVW" secondAttribute="centerY" id="3PT-Y8-5pS"/>
+                            <constraint firstItem="7L3-fB-G8M" firstAttribute="top" secondItem="a0U-YC-eVW" secondAttribute="bottom" constant="8" id="Lel-7h-Nbk"/>
+                            <constraint firstItem="a0U-YC-eVW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="20" symbolic="YES" id="Oe0-gs-KXx"/>
+                            <constraint firstItem="a0U-YC-eVW" firstAttribute="top" secondItem="vG2-Gv-iYI" secondAttribute="bottom" constant="8" id="PM8-N0-TDo"/>
+                            <constraint firstAttribute="trailing" secondItem="a0U-YC-eVW" secondAttribute="trailing" constant="20" symbolic="YES" id="c3c-KR-tAi"/>
+                            <constraint firstItem="FkT-KJ-HCL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="7L3-fB-G8M" secondAttribute="trailing" constant="8" symbolic="YES" id="eD9-Kq-NtF"/>
+                            <constraint firstItem="7L3-fB-G8M" firstAttribute="leading" secondItem="a0U-YC-eVW" secondAttribute="leading" id="lY6-ZL-gNC"/>
+                            <constraint firstItem="FkT-KJ-HCL" firstAttribute="trailing" secondItem="a0U-YC-eVW" secondAttribute="trailing" id="qhj-ZP-p6Y"/>
+                            <constraint firstItem="FkT-KJ-HCL" firstAttribute="top" secondItem="a0U-YC-eVW" secondAttribute="bottom" constant="8" id="s14-Dn-Vnw"/>
+                            <constraint firstItem="vG2-Gv-iYI" firstAttribute="centerX" secondItem="a0U-YC-eVW" secondAttribute="centerX" id="yH9-Vj-y49"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="progressAdditionalInfoLabel" destination="FkT-KJ-HCL" id="BzY-1X-csp"/>
+                        <outlet property="progressLabel" destination="7L3-fB-G8M" id="UJ6-Ua-Rcf"/>
+                        <outlet property="progressView" destination="a0U-YC-eVW" id="5He-6n-87y"/>
+                        <outlet property="view" destination="kh9-bI-dsS" id="GMd-b4-3zd"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>
