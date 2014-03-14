@@ -16,8 +16,8 @@
 											  options:(NSEnumerationOptions)opts
 											  onQueue:(dispatch_queue_t)queue
 										 stepsPerLoop:(NSUInteger)stepsPerLoop
-										   usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
-										   completion:(void (^)(NSUInteger stoppedIndex))completion
+										   usingBlock:(ASMNSArrayAsyncEnumerationBlock)block
+										   completion:(ASMNSArrayAsyncEnumerationCompletionBlock)completion
 {
 	NSMutableIndexSet* indexSet = [NSMutableIndexSet indexSet];
 	BOOL done = NO;
@@ -91,14 +91,17 @@
 											options:(NSEnumerationOptions)opts
 											onQueue:(dispatch_queue_t)queue
 									   stepsPerLoop:(NSUInteger)stepsPerLoop
-										 usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
-										 completion:(void (^)(NSUInteger stoppedIndex))completion
+										 usingBlock:(ASMNSArrayAsyncEnumerationBlock)block
+										 completion:(ASMNSArrayAsyncEnumerationCompletionBlock)completion
 {
 	NSUInteger indexCount = [s count];
 	NSUInteger* indexes = calloc(indexCount, sizeof(NSUInteger));
 	[s getIndexes:indexes
 		 maxCount:indexCount
 	 inIndexRange:nil];
+
+	ASMNSArrayAsyncEnumerationBlock ourBlock = [block copy];
+	ASMNSArrayAsyncEnumerationCompletionBlock ourCompletion = [completion copy];
 
 	dispatch_async(queue,
 				   ^{
@@ -108,16 +111,16 @@
 																   options:opts
 																   onQueue:queue
 															  stepsPerLoop:stepsPerLoop
-																usingBlock:[block copy]
-																completion:[completion copy]];
+																usingBlock:ourBlock
+																completion:ourCompletion];
 				   });
 }
 
 - (void)asm_enumerateObjectsAsynchronouslyWithOptions:(NSEnumerationOptions)opts
 											  onQueue:(dispatch_queue_t)queue
 										 stepsPerLoop:(NSUInteger)stepsPerLoop
-										   usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
-										   completion:(void (^)(NSUInteger stoppedIndex))completion
+										   usingBlock:(ASMNSArrayAsyncEnumerationBlock)block
+										   completion:(ASMNSArrayAsyncEnumerationCompletionBlock)completion
 {
 	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
 											  options:opts
@@ -129,8 +132,8 @@
 
 - (void)asm_enumerateObjectsAsynchronouslyOnMainQueueWithOptions:(NSEnumerationOptions)opts
 													stepsPerLoop:(NSUInteger)stepsPerLoop
-													  usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
-													  completion:(void (^)(NSUInteger stoppedIndex))completion
+													  usingBlock:(ASMNSArrayAsyncEnumerationBlock)block
+													  completion:(ASMNSArrayAsyncEnumerationCompletionBlock)completion
 {
 	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
 											  options:opts
@@ -140,8 +143,8 @@
 										   completion:completion];
 }
 
-- (void)asm_enumerateObjectsAsynchronouslyOnMainQueueUsingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
-													 completion:(void (^)(NSUInteger stoppedIndex))completion
+- (void)asm_enumerateObjectsAsynchronouslyOnMainQueueUsingBlock:(ASMNSArrayAsyncEnumerationBlock)block
+													 completion:(ASMNSArrayAsyncEnumerationCompletionBlock)completion
 {
 	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
 											  options:0
@@ -152,8 +155,8 @@
 }
 
 - (void)asm_enumerateObjectsAsynchronouslyWithOnQueue:(dispatch_queue_t)queue
-										   usingBlock:(void (^)(id obj, NSUInteger idx, BOOL *stop))block
-										   completion:(void (^)(NSUInteger stoppedIndex))completion
+										   usingBlock:(ASMNSArrayAsyncEnumerationBlock)block
+										   completion:(ASMNSArrayAsyncEnumerationCompletionBlock)completion
 {
 	[self asm_enumerateObjectsAsynchronouslyAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.count)]
 											  options:0
