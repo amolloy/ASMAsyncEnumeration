@@ -81,7 +81,7 @@
 							 }
 						 }];
 
-	progress.completedUnitCount+= stepsTaken;
+	progress.completedUnitCount+= (int64_t)stepsTaken;
 
 	if (!shouldStop && !done)
 	{
@@ -121,7 +121,7 @@
 	ASMNSArrayAsyncEnumerationBlock ourBlock = [block copy];
 	ASMNSArrayAsyncEnumerationCompletionBlock ourCompletion = [completion copy];
 
-	NSProgress* progress = [NSProgress progressWithTotalUnitCount:[s count]];
+	NSProgress* progress = [NSProgress progressWithTotalUnitCount:(int64_t)[s count]];
 
 	dispatch_async(queue,
 				   ^{
